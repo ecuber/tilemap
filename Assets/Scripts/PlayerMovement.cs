@@ -5,14 +5,15 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviour
 {
 
-    public CharacterController2D Controller;
-    public float RunSpeed = 40f;
-    float HorizontalMove = 0f;
+    public CharacterController2D controller;
+    public float runSpeed = 40f;
+
+    float horizontalMove = 0f;
     bool jump = false;
 
     void Update()
     {
-        HorizontalMove = Input.GetAxisRaw("Horizontal") * RunSpeed;
+        horizontalMove = Input.GetAxisRaw("Horizontal") * runSpeed;
 
         if (Input.GetButtonDown("Jump"))
         {
@@ -24,7 +25,7 @@ public class PlayerMovement : MonoBehaviour
     //this part actally moves the guy
     private void FixedUpdate()
     {
-        Controller.Move(HorizontalMove * Time.fixedDeltaTime, false, jump);
+        controller.Move(horizontalMove * Time.fixedDeltaTime, false, jump);
         jump = false;
     }
 }
