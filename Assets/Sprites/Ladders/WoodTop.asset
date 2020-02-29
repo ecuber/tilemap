@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 13312, guid: 0000000000000000e000000000000000, type: 0}
-  m_Name: cavesofgallet_tiles_55
+  m_Name: WoodTop
   m_EditorClassIdentifier: 
-  m_Sprite: {fileID: 5467852283892860602, guid: b7d13b3ce15a2c1439ba0755bc95540a,
+  m_Sprite: {fileID: -3571394752444297203, guid: b7d13b3ce15a2c1439ba0755bc95540a,
     type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_Transform:
