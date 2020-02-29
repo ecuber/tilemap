@@ -6,26 +6,58 @@ public class PlayerMovement : MonoBehaviour
 {
 
     public CharacterController2D controller;
-    public float runSpeed = 40f;
+    public float runSpeed = 50f;
+    public float ladderSpeed = 50f;
+    public LayerMask whatIsLadder;
 
-    float horizontalMove = 0f;
-    bool jump = false;
+    float HorizontalMove = 0f;
+    bool Jump = false;
+    float Distance = 3f;
+    bool IsClimbing;
+    float gravity;
+
+    void Start()
+    {
+        gravity = controller.getGravityScale();
+    }
 
     void Update()
     {
-        horizontalMove = Input.GetAxisRaw("Horizontal") * runSpeed;
+        HorizontalMove = Input.GetAxisRaw("Horizontal") * 0.8f * runSpeed;
 
         if (Input.GetButtonDown("Jump"))
         {
-            jump = true;
+            Jump = true;
         }
 
     }
 
     //this part actally moves the guy
-    private void FixedUpdate()
+    void FixedUpdate()
     {
-        controller.Move(horizontalMove * Time.fixedDeltaTime, false, jump);
-        jump = false;
+        controller.Move(HorizontalMove * Time.fixedDeltaTime, false, Jump);
+        Jump = false;
+
+        RaycastHit2D hitInfo = Physics2D.Raycast(transform.position, Vector2.up, Distance, whatIsLadder);
+
+        if (hitInfo.collider != null)
+        {
+            if (Input.GetButtonDown("Vertical") && Input.GetAxisRaw("Vertical") > 0)
+            {
+                IsClimbing = true;
+            }
+        }
+
+        Rigidbody2D rigidbody = controller.getRigidBody2D();
+
+        if (IsClimbing)
+        {
+            rigidbody.velocity = new Vector2(rigidbody.position.x, Input.GetAxisRaw("Vertical") * ladderSpeed);
+            rigidbody.gravityScale = 0;
+        } else
+        {
+            rigidbody.gravityScale = gravity;
+        }
     }
+
 }

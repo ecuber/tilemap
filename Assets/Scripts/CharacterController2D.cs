@@ -133,7 +133,6 @@ public class CharacterController2D : MonoBehaviour
 		}
 	}
 
-
 	private void Flip()
 	{
 		// Switch the way the player is labelled as facing.
@@ -144,4 +143,8 @@ public class CharacterController2D : MonoBehaviour
 		theScale.x *= -1;
 		transform.localScale = theScale;
 	}
+
+    public Rigidbody2D getRigidBody2D() => m_Rigidbody2D;
+
+	public float getGravityScale() => m_Rigidbody2D.gravityScale;
 }
