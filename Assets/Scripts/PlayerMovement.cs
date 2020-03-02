@@ -44,7 +44,11 @@ public class PlayerMovement : MonoBehaviour
         {
             if (Input.GetButtonDown("Vertical") && Input.GetAxisRaw("Vertical") > 0)
             {
+                Debug.Log("Trying to climb.");
                 IsClimbing = true;
+            } else
+            {
+                IsClimbing = false;
             }
         }
 
@@ -52,8 +56,8 @@ public class PlayerMovement : MonoBehaviour
 
         if (IsClimbing)
         {
-            rigidbody.velocity = new Vector2(rigidbody.position.x, Input.GetAxisRaw("Vertical") * ladderSpeed);
-            rigidbody.gravityScale = 0;
+            rigidbody.velocity = new Vector2(rigidbody.velocity.x, Input.GetAxisRaw("Vertical") * ladderSpeed);
+            rigidbody.gravityScale = 0.25f * gravity;
         } else
         {
             rigidbody.gravityScale = gravity;
