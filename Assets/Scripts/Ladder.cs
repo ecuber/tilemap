@@ -4,28 +4,47 @@ using UnityEngine;
 
 public class Ladder : MonoBehaviour
 {
-    [SerializeField]
-    float speed = 5;
+    public PlayerMovement playerMovement;
+    bool climbing = false;
+    Rigidbody2D rb;
+    float x;
+    float gravity;
+    bool activated = false;
 
+    private void Start()
+    {
+        gravity = playerMovement.getGravity();
+    }
 
     void OnTriggerStay2D(Collider2D other)
     {
-        if (other.gameObject.CompareTag("Player"))
+        rb = other.gameObject.GetComponent<Rigidbody2D>();
+        activated = true;
+        if (other.gameObject.name == "Player")
         {
+            climbing = true;
+        }
 
-            if (Input.GetKey(KeyCode.W))
-            {
-                other.GetComponent<Rigidbody2D>().velocity = new Vector2(0, speed);
+        if (Input.GetButtonDown("Vertical") && Mathf.Abs(Input.GetAxisRaw("Vertical")) > 0.1)
+        {
+            rb.gravityScale = 0f;
+            rb.AddForce(new Vector2(rb.position.x, Input.GetAxisRaw("Vertical") * Time.fixedDeltaTime * playerMovement.ladderSpeed * 100));
+        }
 
-            }
-            else if (Input.GetKey(KeyCode.S))
-            {
-                other.GetComponent<Rigidbody2D>().velocity = new Vector2(0, -speed);
-            }
-            else
-            {
-                other.GetComponent<Rigidbody2D>().velocity = new Vector2(0, 0);
-            }
+    }
+
+    void OnTriggerExit2D(Collider2D other)
+    {
+        Debug.Log("Yikes");
+        if (activated && other.gameObject.name == "Player")
+        {
+            climbing = false;
+            rb.gravityScale = gravity;
+            rb.AddForce(new Vector2(rb.position.x, Input.GetAxisRaw("Vertical") * Time.fixedDeltaTime * playerMovement.ladderSpeed * -10));
         }
     }
+
+   
+
+
 }

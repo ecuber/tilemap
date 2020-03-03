@@ -373,7 +373,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aa95f30ce86f945d6a654032f32a43c0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 5
+  playerMovement: {fileID: 1710502229}
 --- !u!1 &476499983
 GameObject:
   m_ObjectHideFlags: 0
@@ -1053,9 +1053,9 @@ Camera:
     height: 1
   near clip plane: 0.1
   far clip plane: 5000
-  field of view: 50
+  field of view: 40
   orthographic: 1
-  orthographic size: 5
+  orthographic size: 10
   m_Depth: 0
   m_CullingMask:
     serializedVersion: 2
@@ -1079,7 +1079,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 799891124}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.58, y: 0.7, z: -10.200001}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 881358774}
@@ -2194,6 +2194,7 @@ GameObject:
   - component: {fileID: 1710502225}
   - component: {fileID: 1710502228}
   - component: {fileID: 1710502227}
+  - component: {fileID: 1710502230}
   m_Layer: 8
   m_Name: Player
   m_TagString: Untagged
@@ -2326,7 +2327,7 @@ BoxCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 6200000, guid: c37d2b5ff4dc01f47b084c875553ac18, type: 2}
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: -0.05641988, y: 0.14976239}
@@ -2373,9 +2374,26 @@ MonoBehaviour:
   controller: {fileID: 1710502226}
   runSpeed: 50
   ladderSpeed: 50
-  whatIsLadder:
-    serializedVersion: 2
-    m_Bits: 0
+  animator: {fileID: 1710502230}
+--- !u!95 &1710502230
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1710502222}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: a6826de42d9b2594ca4f812df9aa5e6e, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &1771341871
 GameObject:
   m_ObjectHideFlags: 0
