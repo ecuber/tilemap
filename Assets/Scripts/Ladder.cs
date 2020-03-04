@@ -18,6 +18,7 @@ public class Ladder : MonoBehaviour
 
     void OnTriggerStay2D(Collider2D other)
     {
+        Debug.Log("Connected");
         rb = other.gameObject.GetComponent<Rigidbody2D>();
         activated = true;
         if (other.gameObject.name == "Player")
@@ -35,12 +36,12 @@ public class Ladder : MonoBehaviour
 
     void OnTriggerExit2D(Collider2D other)
     {
-        Debug.Log("Yikes");
+        Debug.Log("Disconnected");
         if (activated && other.gameObject.name == "Player")
         {
             climbing = false;
             rb.gravityScale = gravity;
-            rb.AddForce(new Vector2(rb.position.x, Input.GetAxisRaw("Vertical") * Time.fixedDeltaTime * playerMovement.ladderSpeed * -10));
+            rb.AddForce(new Vector2(rb.position.x, Input.GetAxisRaw("Vertical") * Time.fixedDeltaTime * playerMovement.ladderSpeed * -20));
         }
     }
 
