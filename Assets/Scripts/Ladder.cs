@@ -5,15 +5,18 @@ using UnityEngine;
 public class Ladder : MonoBehaviour
 {
     public PlayerMovement playerMovement;
-    bool climbing = false;
+    
     Rigidbody2D rb;
     float x;
     float gravity;
     bool activated = false;
+    private bool climbing = false;
+    public bool Climbing { get => climbing; set => climbing = value; }
 
     private void Start()
     {
         gravity = playerMovement.getGravity();
+        Debug.Log("Initialized Gravity as " + gravity);
     }
 
     void OnTriggerStay2D(Collider2D other)
@@ -22,10 +25,10 @@ public class Ladder : MonoBehaviour
         activated = true;
         if (other.gameObject.name == "Player")
         {
-            climbing = true;
+            Climbing = true;
         }
 
-        if (Input.GetButtonDown("Vertical") && Mathf.Abs(Input.GetAxisRaw("Vertical")) > 0.1)
+        if (Input.GetButtonDown("Vertical"))
         {
             rb.gravityScale = 0f;
             rb.AddForce(new Vector2(rb.position.x, Input.GetAxisRaw("Vertical") * Time.fixedDeltaTime * playerMovement.ladderSpeed * 100));
@@ -38,9 +41,10 @@ public class Ladder : MonoBehaviour
         Debug.Log("Yikes");
         if (activated && other.gameObject.name == "Player")
         {
-            climbing = false;
+            Climbing = false;
             rb.gravityScale = gravity;
-            rb.AddForce(new Vector2(rb.position.x, Input.GetAxisRaw("Vertical") * Time.fixedDeltaTime * playerMovement.ladderSpeed * -10));
+            rb.velocity = Vector2.zero;
+            rb.AddForce(Vector2.down * gravity);
         }
     }
 

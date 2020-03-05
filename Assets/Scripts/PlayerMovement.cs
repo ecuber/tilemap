@@ -13,16 +13,10 @@ public class PlayerMovement : MonoBehaviour
 
     float HorizontalMove = 0f;
     bool Jump = false;
-    float gravity;
-
-    void Start()
-    {
-        gravity = controller.getGravityScale();
-    }
 
     public float getGravity()
     {
-        return gravity;
+        return controller.getGravityScale();
     }
 
     void Update()
