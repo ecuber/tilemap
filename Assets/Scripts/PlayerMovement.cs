@@ -9,6 +9,8 @@ public class PlayerMovement : MonoBehaviour
     public float runSpeed = 50f;
     public float ladderSpeed = 50f;
     public Animator animator;
+    public Ladder ladder;
+
     
 
     float HorizontalMove = 0f;
@@ -23,7 +25,7 @@ public class PlayerMovement : MonoBehaviour
     {
         HorizontalMove = Input.GetAxisRaw("Horizontal") * 0.8f * runSpeed;
 
-        if (Input.GetButtonDown("Jump"))
+        if (Input.GetButtonDown("Jump") && !ladder.Climbing)
         {
             Jump = true;
             animator.SetBool("Jump", true);

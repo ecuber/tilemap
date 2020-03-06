@@ -10,8 +10,9 @@ public class Ladder : MonoBehaviour
     float x;
     float gravity;
     bool activated = false;
-    private bool climbing = false;
-    public bool Climbing { get => climbing; set => climbing = value; }
+    bool inContact = false;
+
+    public bool Climbing { get; set; } = false;
 
     private void Start()
     {
@@ -19,11 +20,17 @@ public class Ladder : MonoBehaviour
         Debug.Log("Initialized Gravity as " + gravity);
     }
 
-    void OnTriggerStay2D(Collider2D other)
+    void OnTriggerEnter2D(Collider2D other)
     {
-        Debug.Log("Connected");
+        Debug.Log("Contact");
         rb = other.gameObject.GetComponent<Rigidbody2D>();
         activated = true;
+        rb.gravityScale = 0f;
+        rb.velocity = Vector2.zero;
+    }
+
+    void OnTriggerStay2D(Collider2D other)
+    {
         if (other.gameObject.name == "Player")
         {
             Climbing = true;
@@ -31,7 +38,6 @@ public class Ladder : MonoBehaviour
 
         if (Input.GetButtonDown("Vertical"))
         {
-            rb.gravityScale = 0f;
             rb.AddForce(new Vector2(rb.position.x, Input.GetAxisRaw("Vertical") * Time.fixedDeltaTime * playerMovement.ladderSpeed * 100));
         }
 
@@ -39,17 +45,15 @@ public class Ladder : MonoBehaviour
 
     void OnTriggerExit2D(Collider2D other)
     {
-        Debug.Log("Disconnected");
+        Debug.Log("Disconnect");
         if (activated && other.gameObject.name == "Player")
         {
             Climbing = false;
             rb.gravityScale = gravity;
-<<<<<<< HEAD
             rb.velocity = Vector2.zero;
             rb.AddForce(Vector2.down * gravity);
-=======
             rb.AddForce(new Vector2(rb.position.x, Input.GetAxisRaw("Vertical") * Time.fixedDeltaTime * playerMovement.ladderSpeed * -20));
->>>>>>> 7837a06d832dca9a16484b58e3242f517bb3db24
+            //inContact = false;
         }
     }
 
