@@ -20,17 +20,20 @@ public class Ladder : MonoBehaviour
         Debug.Log("Initialized Gravity as " + gravity);
     }
 
-    void OnTriggerEnter2D(Collider2D other)
+    public void TriggerEnter(Collider2D other)
     {
-        Debug.Log("Contact");
         rb = other.gameObject.GetComponent<Rigidbody2D>();
         activated = true;
         rb.gravityScale = 0f;
-        rb.velocity = Vector2.zero;
+        rb.velocity = new Vector2(rb.velocity.x, 0);
     }
 
-    void OnTriggerStay2D(Collider2D other)
+    public void TriggerStay(Collider2D other)
     {
+        if (!rb.velocity.Equals(Vector2.zero))
+        {
+            // play ladder sound effect
+        }
         if (other.gameObject.name == "Player")
         {
             Climbing = true;
@@ -38,22 +41,26 @@ public class Ladder : MonoBehaviour
 
         if (Input.GetButtonDown("Vertical"))
         {
-            rb.AddForce(new Vector2(rb.position.x, Input.GetAxisRaw("Vertical") * Time.fixedDeltaTime * playerMovement.ladderSpeed * 100));
+            if (Input.GetAxisRaw("Vertical") > 0)
+                rb.AddForce(new Vector2(rb.position.x, Input.GetAxisRaw("Vertical") * Time.fixedDeltaTime * playerMovement.ladderSpeed * 180));
+            if (Input.GetAxisRaw("Vertical") < 0)
+            {
+                rb.velocity = Vector2.zero;
+                rb.AddForce(Vector2.down * playerMovement.ladderSpeed * 2);
+            }
         }
 
     }
 
-    void OnTriggerExit2D(Collider2D other)
+    public void TriggerExit(Collider2D other)
     {
-        Debug.Log("Disconnect");
         if (activated && other.gameObject.name == "Player")
         {
             Climbing = false;
             rb.gravityScale = gravity;
-            rb.velocity = Vector2.zero;
+            rb.velocity = new Vector2(rb.velocity.x, 0);
             rb.AddForce(Vector2.down * gravity);
             rb.AddForce(new Vector2(rb.position.x, Input.GetAxisRaw("Vertical") * Time.fixedDeltaTime * playerMovement.ladderSpeed * -20));
-            //inContact = false;
         }
     }
 
