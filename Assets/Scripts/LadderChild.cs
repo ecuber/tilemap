@@ -11,7 +11,7 @@ public class LadderChild : MonoBehaviour
         if (!triggering)
         {
             triggering = true;
-            Debug.Log("Initialized Contact");
+            Debug.Log("Entered trigger");
             parent.TriggerEnter(other);
         }
 
@@ -19,6 +19,7 @@ public class LadderChild : MonoBehaviour
 
     void OnTriggerStay2D(Collider2D other)
     {
+        //Debug.Log("Trigger Stay");
         parent.TriggerStay(other);
     }
 
@@ -27,7 +28,7 @@ public class LadderChild : MonoBehaviour
         if (triggering)
         {
             triggering = false;
-            Debug.Log("Ended Contact");
+            Debug.Log("Exited Trigger");
             parent.TriggerExit(other);
         }
        

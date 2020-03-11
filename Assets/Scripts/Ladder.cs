@@ -11,6 +11,8 @@ public class Ladder : MonoBehaviour
     float gravity;
     bool activated = false;
     bool inContact = false;
+    bool ascending = false;
+    bool descending = false;
 
     public bool Climbing { get; set; } = false;
 
@@ -23,7 +25,6 @@ public class Ladder : MonoBehaviour
     public void TriggerEnter(Collider2D other)
     {
         rb = other.gameObject.GetComponent<Rigidbody2D>();
-        activated = true;
         rb.gravityScale = 0f;
         rb.velocity = new Vector2(rb.velocity.x, 0);
     }
@@ -34,6 +35,7 @@ public class Ladder : MonoBehaviour
         {
             // play ladder sound effect
         }
+
         if (other.gameObject.name == "Player")
         {
             Climbing = true;
@@ -42,11 +44,35 @@ public class Ladder : MonoBehaviour
         if (Input.GetButtonDown("Vertical"))
         {
             if (Input.GetAxisRaw("Vertical") > 0)
-                rb.AddForce(new Vector2(rb.position.x, Input.GetAxisRaw("Vertical") * Time.fixedDeltaTime * playerMovement.ladderSpeed * 180));
-            if (Input.GetAxisRaw("Vertical") < 0)
             {
-                rb.velocity = Vector2.zero;
-                rb.AddForce(Vector2.down * playerMovement.ladderSpeed * 2);
+                if (!ascending)
+                {
+                    ascending = true;
+                    descending = false;
+                    rb.velocity = Vector2.zero;
+                    rb.AddForce(new Vector2(rb.position.x, Input.GetAxisRaw("Vertical") * Time.fixedDeltaTime * playerMovement.ladderSpeed * 180));
+                } else
+                {
+                    ascending = false;
+                    rb.velocity = Vector2.zero;
+                }
+                
+            } 
+                
+            else if (Input.GetAxisRaw("Vertical") < 0)
+            {
+                if (!descending)
+                {
+                    ascending = false;
+                    descending = true;
+                    rb.velocity = Vector2.zero;
+                    rb.AddForce(Vector2.down * playerMovement.ladderSpeed * 3.5f);
+                } else
+                {
+                    descending = false;
+                    rb.velocity = Vector2.zero;
+                }
+                
             }
         }
 
@@ -54,11 +80,13 @@ public class Ladder : MonoBehaviour
 
     public void TriggerExit(Collider2D other)
     {
-        if (activated && other.gameObject.name == "Player")
+        if (other.gameObject.name == "Player")
         {
             Climbing = false;
             rb.gravityScale = gravity;
-            rb.velocity = new Vector2(rb.velocity.x, 0);
+            ascending = false;
+            descending = false;
+            rb.velocity = Vector2.zero;
             rb.AddForce(Vector2.down * gravity);
             rb.AddForce(new Vector2(rb.position.x, Input.GetAxisRaw("Vertical") * Time.fixedDeltaTime * playerMovement.ladderSpeed * -20));
         }
