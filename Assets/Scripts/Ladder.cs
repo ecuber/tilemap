@@ -33,7 +33,7 @@ public class Ladder : MonoBehaviour
     {
         if (!rb.velocity.Equals(Vector2.zero))
         {
-            // play ladder sound effect
+            // TODO: play ladder sound effect
         }
 
         if (other.gameObject.name == "Player")
