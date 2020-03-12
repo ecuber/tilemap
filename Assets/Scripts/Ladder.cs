@@ -7,12 +7,10 @@ public class Ladder : MonoBehaviour
     public PlayerMovement playerMovement;
     
     Rigidbody2D rb;
-    float x;
     float gravity;
-    bool activated = false;
-    bool inContact = false;
     bool ascending = false;
     bool descending = false;
+    bool jumped = false;
 
     public bool Climbing { get; set; } = false;
 
@@ -27,54 +25,66 @@ public class Ladder : MonoBehaviour
         rb = other.gameObject.GetComponent<Rigidbody2D>();
         rb.gravityScale = 0f;
         rb.velocity = new Vector2(rb.velocity.x, 0);
+        jumped = false;
     }
 
     public void TriggerStay(Collider2D other)
     {
-        if (!rb.velocity.Equals(Vector2.zero))
+        if (!jumped)
         {
-            // TODO: play ladder sound effect
-        }
-
-        if (other.gameObject.name == "Player")
-        {
-            Climbing = true;
-        }
-
-        if (Input.GetButtonDown("Vertical"))
-        {
-            if (Input.GetAxisRaw("Vertical") > 0)
+            if (!rb.velocity.Equals(Vector2.zero))
             {
-                if (!ascending)
-                {
-                    ascending = true;
-                    descending = false;
-                    rb.velocity = Vector2.zero;
-                    rb.AddForce(new Vector2(rb.position.x, Input.GetAxisRaw("Vertical") * Time.fixedDeltaTime * playerMovement.ladderSpeed * 180));
-                } else
-                {
-                    ascending = false;
-                    rb.velocity = Vector2.zero;
-                }
-                
-            } 
-                
-            else if (Input.GetAxisRaw("Vertical") < 0)
+                // TODO: play ladder sound effect
+            }
+
+            if (other.gameObject.name == "Player")
             {
-                if (!descending)
+                Climbing = true;
+            }
+
+            if (Input.GetButtonDown("Vertical"))
+            {
+                if (Input.GetAxisRaw("Vertical") > 0)
                 {
-                    ascending = false;
-                    descending = true;
-                    rb.velocity = Vector2.zero;
-                    rb.AddForce(Vector2.down * playerMovement.ladderSpeed * 3.5f);
-                } else
-                {
-                    descending = false;
-                    rb.velocity = Vector2.zero;
-                }
+                    if (!ascending)
+                    {
+                        ascending = true;
+                        descending = false;
+                        rb.velocity = Vector2.zero;
+                        rb.AddForce(new Vector2(rb.position.x, Input.GetAxisRaw("Vertical") * Time.fixedDeltaTime * playerMovement.ladderSpeed * 180));
+                    } else
+                    {
+                        ascending = false;
+                        rb.velocity = Vector2.zero;
+                    }
                 
+                } 
+                
+                else if (Input.GetAxisRaw("Vertical") < 0)
+                {
+                    if (!descending)
+                    {
+                        ascending = false;
+                        descending = true;
+                        rb.velocity = Vector2.zero;
+                        rb.AddForce(Vector2.down * playerMovement.ladderSpeed * 3.5f);
+                    } else
+                    {
+                        descending = false;
+                        rb.velocity = Vector2.zero;
+                    }
+                
+                }
+            } else if (Input.GetButtonDown("Jump"))
+            {
+                Debug.Log("Jumpy");
+                ascending = false;
+                descending = false;
+                jumped = true;
+                TriggerExit(other);
             }
         }
+        
 
     }
 
